@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{% block title %}My Todo App{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>My Todo App</h1>
+            <nav>
+                <a href="{{ url_for('tasks.view_task') }}">HOME</a>
+                
+                {% if 'user' in session %}
+                <a href="{{ url_for('auth.logout') }}">LOGOUT</a>
+                {% else %}
+                <a href="{{ url_for('auth.login') }}">LOGIN</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="container">
+        <p>&copy; 2025 Flask App</p>
+    </footer>
+</body>
+</html>
